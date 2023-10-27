@@ -1,42 +1,41 @@
 import socket
-from scapy.layers.l2 import ARP, Ether
-from scapy.sendrecv import srp
 import uuid
 
 
-def get_mac_address():  # weird
-    # Gets the hostname of the local machine
-    hostname = socket.gethostname()
-
-    # Gets the MAC address using the hostname
-    mac = uuid.UUID(int=uuid.getnode()).hex[-12:]
-    mac_address = ":".join([mac[e:e + 2] for e in range(0, 12, 2)])
-
-    return mac_address
+def get_local_mac_address():
+    """
+    Gets local machine's MAC address
+    :return: mac address
+    """
+    mac = uuid.UUID(int=(uuid.getnode() - 1)).hex[-12:]
+    return ":".join([mac[e:e + 2] for e in range(0, 12, 2)])
 
 
 def get_local_ip():
+    """
+    Gets local machine's IP address
+    :return: ip address
+    """
     try:
-        # Create a socket to the default gateway and get the local IP address
         local_ip = socket.gethostbyname(socket.gethostname())
         return local_ip
     except Exception as e:
         return str(e)
 
 
-def get_gateway_ip():
-    try:
-        # Create an ARP request packet to find the gateway's IP
-        arp = ARP(pdst="0.0.0.0")
-        ether = Ether(dst="ff:ff:ff:ff:ff:ff")
-        packet = ether/arp
-
-        # Send the packet and receive a response
-        result, _ = srp(packet, timeout=3, verbose=False)
-
-        # Extract the IP address from the response
-        for sent, received in result:
-            return received.psrc
-
-    except Exception as e:
-        return None
+# def get_default_gateway_mac(ip_address):
+#     """
+#     Gets the mac address of the default gateway (router) of the network you're connected to
+#     :param ip_address:
+#     :return:
+#     """
+#     try:
+#         output = subprocess.check_output(["arp", "-a", ip_address])
+#         output = output.decode("utf-8")
+#         mac_address = output.split()[11]
+#         return mac_address
+#     except Exception as e:
+#         print("Error:", e)
+#         return None
+#
+#
