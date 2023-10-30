@@ -10,7 +10,8 @@ sniffing all the packets of your network partners
 * Tricking them by convincing them you're the router (cache poisoning)
 
 ## Disadvantages - (will be solved in future)
-Cache poisoning do works alyways but sniffing Partially fails in some WIFI networks 
+Cache poisoning do works alyways,
+but sniffing the packets after the poisoning Partially fails in some WIFI networks 
 due to router playing as the main connector between the network partners (settings)
 
 ### learning pruposes only
