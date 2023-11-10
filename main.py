@@ -54,11 +54,9 @@ def track_victims(gateway_ip, local_mac):
 
     while get_tracking_state():
         if get_is_tracked():
-            print("Aviv\n")
             scapy.sniff(filter=f"arp and arp[6:2] = 1", prn=arp_handler)
             change_is_tracked_state(False)
         else:
-            print("Ben Hamo\n")
             time.sleep(1)
 
 
